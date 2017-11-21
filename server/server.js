@@ -46,6 +46,31 @@ app.get('/shoes', function(req, res) {
     // res.send(shoes); to test
 });
 
+app.post('/shoes', function(req, res){
+    //attempt to connect to the database
+    pool.connect(function(errorConnectingToDatabase, client, done){
+        if (errorConnectingToDatabase) {
+            //there was an error connecting to the database
+            console.log('error connecting to database', errorConnectingToDatabase);
+            res.sendStatus(500);
+        } else {
+            //we connected to the database
+            //now, we are going to get things from the database
+            client.query(`INSERT INTO shoes (name, cost) 
+            VALUES ($1, $2);`, [req.body.name, req.body.cost], function(errorMakingQuery, result){
+                done();//have to write it with the VALUES ($1, $2, $3, ect..)', [req.body.--, req.body.--]
+                if (errorMakingQuery) {
+                    //query failed, did you test in postico?
+                    console.log('error making query', errorMakingQuery);
+                    res.send(500);
+                } else {
+                    res.sendStatus(201);//201 is created.
+                }
+            });//copy and paste form database.js
+        }
+    });
+});
+
 app.listen(port, function(){
     console.log('server is listening on port 5000');
 });
