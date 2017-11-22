@@ -81,7 +81,7 @@ router.delete('/:id', function(req, res){
 
 router.put('/:id', function(req, res){
     var shoeIdToSave = req.params.id;
-    var shoeNameToSave = req.params.name;
+    //var shoeNameToSave = req.params.name;
     //attempt to connect to the database
     pool.connect(function(errorConnectingToDatabase, client, done){//connects to the database
         if (errorConnectingToDatabase) {
@@ -91,7 +91,7 @@ router.put('/:id', function(req, res){
         } else {
             //we connected to the database
             //now, we are going to get things from the database
-            client.query(`UPDATE shoes SET name=$1 WHERE id=$2;`, [shoeIdToSave, shoeNameToSave], function(errorMakingQuery, result){
+            client.query(`UPDATE shoes SET "name" = 'moon boots' WHERE "id"=$1;`, [shoeIdToSave], function(errorMakingQuery, result){
                 done();
                 if (errorMakingQuery) {
                     //query failed, did you test in postico?

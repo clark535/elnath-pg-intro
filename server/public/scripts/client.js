@@ -78,7 +78,7 @@ function editShoe() {
 
     $.ajax({
         method: 'PUT',
-        url: '/shoes/' + shoeIdToSave + shoeNameToSave,
+        url: '/shoes/' + shoeIdToSave,
         data: {
             name: 'Moon Boots'
         },
