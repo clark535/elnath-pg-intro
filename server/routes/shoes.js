@@ -54,4 +54,55 @@ router.post('/', function(req, res){
     });
 });
 
+router.delete('/:id', function(req, res){
+    var shoeIdToRemove = req.params.id;
+    //attempt to connect to the database
+    pool.connect(function(errorConnectingToDatabase, client, done){//connects to the database
+        if (errorConnectingToDatabase) {
+            //there was an error connecting to the database
+            console.log('error connecting to database', errorConnectingToDatabase);
+            res.sendStatus(500);
+        } else {
+            //we connected to the database
+            //now, we are going to get things from the database
+            client.query(`DELETE FROM shoes WHERE id=$1;`, [shoeIdToRemove], function(errorMakingQuery, result){
+                done();
+                if (errorMakingQuery) {
+                    //query failed, did you test in postico?
+                    console.log('error making query', errorMakingQuery);
+                    res.send(500);
+                } else {
+                    res.sendStatus(200);//200 is all good.
+                }
+            });//copy and paste form database.js
+        }
+    });
+});
+
+router.put('/:id', function(req, res){
+    var shoeIdToSave = req.params.id;
+    var shoeNameToSave = req.params.name;
+    //attempt to connect to the database
+    pool.connect(function(errorConnectingToDatabase, client, done){//connects to the database
+        if (errorConnectingToDatabase) {
+            //there was an error connecting to the database
+            console.log('error connecting to database', errorConnectingToDatabase);
+            res.sendStatus(500);
+        } else {
+            //we connected to the database
+            //now, we are going to get things from the database
+            client.query(`UPDATE shoes SET name=$1 WHERE id=$2;`, [shoeIdToSave, shoeNameToSave], function(errorMakingQuery, result){
+                done();
+                if (errorMakingQuery) {
+                    //query failed, did you test in postico?
+                    console.log('error making query', errorMakingQuery);
+                    res.send(500);
+                } else {
+                    res.sendStatus(200);//200 is all good.
+                }
+            });//copy and paste form database.js
+        }
+    });
+});
+
 module.exports = router;

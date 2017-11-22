@@ -12,7 +12,7 @@ app.use(express.static('server/public'));
 
 
 //for localhost::5000/shoes should return an array of shoe obects
-// var shoes = [{name: 'nike', cost: '75'}];
+
 app.use('/shoes', shoes);
 
 
